@@ -27,7 +27,12 @@ def main() -> None:
         raise SystemExit(f"entry is {len(text)} chars, must be 1-400")
     if not text.strip():
         raise SystemExit("entry is only whitespace")
-    out_dir = os.environ.get("OUTPUT_DIR", "/output")
+    lines = text.rstrip("\n").split("\n")
+    if len(lines) != 2:
+        raise SystemExit(f"entry must be exactly 2 lines, got {len(lines)}")
+    out_dir = os.environ.get(
+        "MAKEFUN_OUTPUT_DIR", os.environ.get("OUTPUT_DIR", "/output")
+    )
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, "entry.txt")
     with open(out_path, "w", encoding="utf-8") as f:
